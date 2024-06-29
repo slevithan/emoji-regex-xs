@@ -1,11 +1,6 @@
 # emoji-regex-xs
 
-This is a drop-in replacement for the [`emoji-regex`](https://github.com/mathiasbynens/emoji-regex) package that shares its API and passes all of its emoji tests, but reduces its uncompressed size by more than 97% (from ~13 KB to 0.3 KB). As a tradeoff for the smaller size, it relies on the regex `u` flag which requires Node.js 10+ or a browser from 2016 or later.
-
-There are two additional small differences:
-
-- `emoji-regex-xs` uses whatever version of Unicode that your browser or environment supports natively to determine the base list of emoji, whereas specific versions of `emoji-regex` are tied to specific Unicode versions.
-- `emoji-regex-xs`, due to its use of a general pattern, matches some additional emoji that are supported on some but not all platforms, like [women wrestling: light skin tone](https://emojipedia.org/women-wrestling-light-skin-tone#designs) and [flag for Texas](https://emojipedia.org/flag-for-texas-ustx#designs).
+This is a drop-in replacement for the [`emoji-regex`](https://github.com/mathiasbynens/emoji-regex) package that shares its API and passes all of its emoji tests, but reduces its uncompressed size by more than 97% (from ~13 KB to 0.3 KB).
 
 ## Install and use
 
@@ -54,6 +49,51 @@ Matched sequence 👩🏿 — code points: 2
 Matched sequence 👩🏿 — code points: 2
 ```
 
+## Detailed comparison with `emoji-regex`
+
+<table>
+  <tr>
+    <th></th>
+    <th><code>emoji-regex</code></th>
+    <th><code>emoji-regex-xs</code></th>
+  </tr>
+  <tr>
+    <td><b>Compatibility</b></td>
+    <td>• Node.js 4 <br> • 2015-era browsers</td>
+    <td>• Node.js 10 <br> • 2016-era browsers</td>
+  </tr>
+  <tr>
+    <td><b>Unicode version</b></td>
+    <td>Specific package versions are tied to specific Unicode versions, so results are deterministic.</td>
+    <td>Relies on the Unicode version that your browser or environment supports natively.</td>
+  </tr>
+  <tr>
+    <td><b>Excludes non-emoji symbols, dingbats, etc.</b></td>
+    <td>Yes.</td>
+    <td>Yes.</td>
+  </tr>
+  <tr>
+    <td><b>Matches everything matched by <code>/\p{RGI_Emoji}/v</code></b></td>
+    <td>Yes.</td>
+    <td>Yes.</td>
+  </tr>
+  <tr>
+    <td><b>Matches additional non-RGI emoji</b></td>
+    <td>Yes. Uses an explicitly-specified list (Unicode's <code>emoji-test.txt</code> strings) plus an additional list of exceptions. This allows some overqualified and underqualified emoji.</td>
+    <td>Yes. Allows overqualified and underqualified emoji. Since it uses a general pattern, it also allows matching emoji supported on only some platforms that are not correctly matched by <code>emoji-regex</code>, like <a href="https://emojipedia.org/women-wrestling-light-skin-tone#designs">women wrestling: light skin tone</a> and <a href="https://emojipedia.org/flag-for-texas-ustx#designs">flag for Texas</a>. Thus the results can be considered more complete. However, it also matches any Unicode sequence that follows the structure of a valid emoji even if it's a combination that doesn't currently correspond to an emoji that's used in practice.</td>
+  </tr>
+  <tr>
+    <td><b>Uncompressed size</b></td>
+    <td>~13 KB</td>
+    <td>~0.3 KB</td>
+  </tr>
+  <tr>
+    <td><b>Gzipped size</b></td>
+    <td>~3 KB</td>
+    <td>~0.3 KB</td>
+  </tr>
+</table>
+
 ## More details about emoji, Unicode properties, and regexes
 
 Emoji are complicated. Or more specifically, how they're defined in the Unicode Standard is complicated. So writing a regex that matches all/only emoji is also complicated. For starters, individual emoji can be made up of between one and *many* Unicode code points, and there are a variety of different sequence patterns. There are also a variety of Unicode symbols, dingbats, etc. that are not emoji, that we don't want to match.
@@ -64,6 +104,4 @@ ES2018 added support for matching Unicode properties in regular expressions with
 
 ES2024 added support for matching multicharacter Unicode *properties of strings* with `\p{…}`, so you might think one of the new properties `Basic_Emoji`, `Emoji_Keycap_Sequence`, `RGI_Emoji_Modifier_Sequence`, `RGI_Emoji_Flag_Sequence`, `RGI_Emoji_Tag_Sequence`, `RGI_Emoji_ZWJ_Sequence`, or `RGI_Emoji` will do the trick. Well, kind of. `RGI_Emoji` indeed seems like what we want, but unfortunately, some common-sense and broadly-supported emoji are not officially in the "RGI" (Recommended for General Interchange) list. And even more frustratingly, some emoji are commonly used in an underqualified or overqualified way (by including or excluding certain invisible Unicode markers) that prevents them from being matched by `RGI_Emoji`. For example, the iOS emoji keyboard overqualifies certain emoji. So we need something that matches everything in `RGI_Emoji`, and more. Additionally, `\p{RGI_Emoji}` relies on flag `v` which is only supported by 2023-era browsers and Node.js 20+.
 
-All of this is why the extremely popular `emoji-regex` package exists. It does a great job of accurately matching most common-sense emoji. But to do so, it uses a gigantic (~13 KB uncompressed) regex that hard codes a list of Unicode code points that are tied to a specific Unicode version. Conversely, `emoji-regex-xs` uses a general pattern that continues to be highly accurate in matching all/only emoji, but uses only ~0.3 KB to do so. It follows `emoji-regex`'s API and reuses its tests, so it can be swapped-in as a replacement.
-
-<!-- `emoji-regex-xs` started based on [this discussion](https://github.com/mathiasbynens/rgi-emoji-regex-pattern/issues/3). -->
+All of this is why the popular `emoji-regex` package exists. It does a great job of accurately matching most common-sense emoji. But to do so, it uses a gigantic (~13 KB uncompressed) regex that hard codes a list of Unicode code points that are tied to a specific Unicode version. Conversely, `emoji-regex-xs` uses a general pattern that continues to be highly accurate in matching all/only emoji, but uses only ~0.3 KB to do so. It follows `emoji-regex`'s API and reuses its tests, so it can be swapped-in as a replacement.
