@@ -63,26 +63,6 @@ Matched sequence 👩🏿 — code points: 2
     <td>• Node.js 10 <br> • 2016-era browsers</td>
   </tr>
   <tr>
-    <td><b>Unicode version</b></td>
-    <td>Specific package versions are tied to specific Unicode versions, so results are deterministic.</td>
-    <td>Relies on the Unicode version that your browser or environment supports natively.</td>
-  </tr>
-  <tr>
-    <td><b>Excludes non-emoji symbols, dingbats, etc.</b></td>
-    <td>Yes.</td>
-    <td>Yes.</td>
-  </tr>
-  <tr>
-    <td><b>Matches everything matched by <code>/\p{RGI_Emoji}/v</code></b></td>
-    <td>Yes.</td>
-    <td>Yes.</td>
-  </tr>
-  <tr>
-    <td><b>Matches additional non-RGI emoji</b></td>
-    <td>Yes. Uses an explicitly-specified list (Unicode's <code>emoji-test.txt</code> strings) plus an additional list of exceptions. This allows some overqualified and underqualified emoji.</td>
-    <td>Yes. Allows overqualified and underqualified emoji. Since it uses a general pattern, it also allows matching emoji supported on only some platforms that are not correctly matched by <code>emoji-regex</code>, like <a href="https://emojipedia.org/women-wrestling-light-skin-tone#designs">women wrestling: light skin tone</a> and <a href="https://emojipedia.org/flag-for-texas-ustx#designs">flag for Texas</a>. Thus the results can be considered more complete. However, it also matches any Unicode sequence that follows the structure of a valid emoji even if it's a combination that doesn't currently correspond to an emoji that's used in practice.</td>
-  </tr>
-  <tr>
     <td><b>Uncompressed size</b></td>
     <td>~13 KB</td>
     <td>~0.3 KB</td>
@@ -91,6 +71,26 @@ Matched sequence 👩🏿 — code points: 2
     <td><b>Gzipped size</b></td>
     <td>~3 KB</td>
     <td>~0.3 KB</td>
+  </tr>
+  <tr>
+    <td><b>Unicode version</b></td>
+    <td>Specific package versions are tied to specific Unicode versions, so results are deterministic.</td>
+    <td>Uses the Unicode version that your browser or environment supports natively, so results match the handling of other functionality.</td>
+  </tr>
+  <tr>
+    <td><b>Excludes non-emoji symbols, dingbats, etc.</b></td>
+    <td>Yes.</td>
+    <td>Yes.</td>
+  </tr>
+  <tr>
+    <td><b>Matches everything matched by ES2024's <code>/\p{RGI_Emoji}/v</code></b></td>
+    <td>Yes.</td>
+    <td>Yes.</td>
+  </tr>
+  <tr>
+    <td><b>Matches additional non-RGI emoji</b></td>
+    <td>Yes. Uses an explicitly-defined list (Unicode's <code>emoji-test.txt</code> strings) plus an additional list of exceptions. This allows some overqualified and underqualified emoji.</td>
+    <td>Yes. Allows overqualified and underqualified emoji. Since it uses a general pattern, it also matches emoji supported on only some platforms that are not correctly matched by <code>emoji-regex</code> (ex: <a href="https://emojipedia.org/women-wrestling-light-skin-tone#designs">women wrestling: light skin tone</a> and <a href="https://emojipedia.org/flag-for-texas-ustx#designs">flag for Texas</a>). The results can therefore be considered more complete. However, it also matches any Unicode sequence that follows the structure of a valid emoji even if it's a combination that doesn't correspond to an emoji that's used in practice.</td>
   </tr>
 </table>
 
