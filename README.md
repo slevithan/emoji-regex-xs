@@ -74,7 +74,7 @@ Matched sequence 👩🏿 — code points: 2
   </tr>
   <tr>
     <td><b>Unicode version</b></td>
-    <td>Specific package versions are tied to specific Unicode versions, so results are deterministic.</td>
+    <td>Uses the latest Unicode version at the time of release, so results are deterministic.</td>
     <td>Uses the Unicode version that your browser or environment supports natively, so results match the handling of other functionality.</td>
   </tr>
   <tr>
@@ -89,8 +89,8 @@ Matched sequence 👩🏿 — code points: 2
   </tr>
   <tr>
     <td><b>Matches additional non-RGI emoji</b></td>
-    <td>Yes. Uses an explicitly-defined list (Unicode's <code>emoji-test.txt</code> strings) plus an additional list of exceptions. This allows some overqualified and underqualified emoji.</td>
-    <td>Yes. Allows overqualified and underqualified emoji. Since it uses a general pattern, it also matches emoji supported on only some platforms that are not correctly matched by <code>emoji-regex</code> (ex: <a href="https://emojipedia.org/women-wrestling-light-skin-tone#designs">women wrestling: light skin tone</a> and <a href="https://emojipedia.org/flag-for-texas-ustx#designs">flag for Texas</a>). The results can therefore be considered more complete. However, it also matches any Unicode sequence that follows the structure of a valid emoji even if it's a combination that doesn't correspond to an emoji that's used in practice.</td>
+    <td>Yes. Allows overqualified and underqualified emoji using an explicitly-defined list (Unicode's <a href="https://unicode.org/Public/emoji/latest/emoji-test.txt">emoji-test.txt</a> strings, which includes non-RGI emoji) plus an additional list of exceptions.</td>
+    <td>Yes. Allows overqualified and underqualified emoji using a general pattern that matches all Unicode sequences that follow the structure of valid emoji. This allows it to match emoji supported on only some platforms (ex: <a href="https://emojipedia.org/women-wrestling-light-skin-tone#designs">women wrestling: light skin</a> and <a href="https://emojipedia.org/flag-for-texas-ustx#designs">Texas flag</a>) that aren't correctly matched by <code>emoji-regex</code>. Results are therefore more complete, but note that they can include emoji sequences that don't correspond to currently-used emoji.</td>
   </tr>
 </table>
 
@@ -98,7 +98,7 @@ Matched sequence 👩🏿 — code points: 2
 
 Emoji are complicated. Or more specifically, how they're defined in the Unicode Standard is complicated. So writing a regex that matches all/only emoji is also complicated. For starters, individual emoji can be made up of between one and *many* Unicode code points, and there are a variety of different sequence patterns. There are also a variety of Unicode symbols, dingbats, etc. that are not emoji, that we don't want to match.
 
-Given the complexity, many libraries that roll their own emoji regex get it very wrong, e.g. by matching emoji fragments that split off some of their attributes, or by matching things like digits (0, 1, 2, …), #, \*, or certain invisible characters. These characters are obviously not emoji, but they're matched by naive patterns because they might *become* emoji when followed by various combining characters. Or they might be special characters used in some emoji sequences while not being emoji on their own.
+Given the complexity, many libraries that roll their own emoji regex get it very wrong, e.g. by matching emoji fragments that split off some of their attributes, or by matching things like digits (0, 1, 2, …), #, \*, or certain invisible characters. These characters are obviously not emoji, but they're matched by naive patterns because they might *become* emoji when followed by various combining characters. Or they might be special characters used in emoji sequences while not being emoji on their own.
 
 ES2018 added support for matching Unicode properties in regular expressions with `\p{…}`, so you might think this problem is now trivial, given that the list of supported properties includes `Emoji`, `Emoji_Presentation`, `Emoji_Modifier`, `Emoji_Modifier_Base`, `Emoji_Component`, and `Extended_Pictographic`. But no. On their own, none of these are what you want.
 
