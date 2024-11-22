@@ -26,7 +26,7 @@
     "test": "mocha"
   },
   "devDependencies": {
-    "@unicode/unicode-15.1.0": "^1.5.2",
-    "mocha": "^10.5.2"
+    "@unicode/unicode-15.1.0": "^1.6.5",
+    "mocha": "^10.8.2"
   }
 }
