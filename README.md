@@ -1,5 +1,9 @@
 # emoji-regex-xs
 
+[![npm version][npm-version-src]][npm-version-href]
+[![npm downloads][npm-downloads-src]][npm-downloads-href]
+[![bundle][bundle-src]][bundle-href]
+
 This is a drop-in replacement for the [`emoji-regex`](https://github.com/mathiasbynens/emoji-regex) package that shares its API and passes all of its emoji tests, but reduces its uncompressed size by more than 97% (from ~13 KB to 0.3 KB).
 
 ## Install and use
@@ -105,3 +109,12 @@ ES2018 added support for matching Unicode properties in regular expressions with
 ES2024 added support for matching multicharacter Unicode *properties of strings* with `\p{…}`, so you might think one of the new properties `Basic_Emoji`, `Emoji_Keycap_Sequence`, `RGI_Emoji_Modifier_Sequence`, `RGI_Emoji_Flag_Sequence`, `RGI_Emoji_Tag_Sequence`, `RGI_Emoji_ZWJ_Sequence`, or `RGI_Emoji` will do the trick. Well, kind of. `RGI_Emoji` indeed seems like what we want, but unfortunately, some common-sense and broadly-supported emoji are not officially in the "RGI" (Recommended for General Interchange) list. And even more frustratingly, some emoji are commonly used in an underqualified or overqualified way (by including or excluding certain invisible Unicode markers) that prevents them from being matched by `RGI_Emoji`. For example, the iOS emoji keyboard overqualifies certain emoji. So we need something that matches everything in `RGI_Emoji`, and more. Additionally, `\p{RGI_Emoji}` relies on flag `v` which is only supported by 2023-era browsers and Node.js 20+.
 
 All of this is why the popular `emoji-regex` package exists. It does a great job of accurately matching most common-sense emoji. But to do so, it uses a massive (~13 KB uncompressed) regex that hard codes a list of Unicode code points that are tied to a specific Unicode version. Conversely, `emoji-regex-xs` uses a general pattern that continues to be highly accurate in matching all/only emoji, but uses only ~0.3 KB to do so. It follows `emoji-regex`'s API and reuses its tests, so it can be swapped-in as a replacement.
+
+<!-- Badges -->
+
+[npm-version-src]: https://img.shields.io/npm/v/emoji-regex-xs?color=78C372
+[npm-version-href]: https://npmjs.com/package/emoji-regex-xs
+[npm-downloads-src]: https://img.shields.io/npm/dm/emoji-regex-xs?color=78C372
+[npm-downloads-href]: https://npmjs.com/package/emoji-regex-xs
+[bundle-src]: https://img.shields.io/bundlejs/size/emoji-regex-xs?color=78C372&label=minzip
+[bundle-href]: https://bundlejs.com/?q=emoji-regex-xs&treeshake=[*]
