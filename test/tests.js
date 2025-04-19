@@ -1,4 +1,8 @@
-// Tests copied from emoji-regex 10.3.0 by @mathiasbynens; MIT License
+// Only test the latest Unicode version's full emoji lists in recent Node.js since emoji-regex-xs
+// uses the version of Unicode supported by the environment
+const latestNode = +process.versions.node.split('.')[0] >= 23;
+
+// Tests copied (with modifications) from emoji-regex 10.3.0 by @mathiasbynens; MIT License
 // <https://github.com/mathiasbynens/emoji-regex>
 
 const assert = require('assert');
@@ -56,10 +60,12 @@ describe('regex', () => {
     });
   };
 
-  // Test `Emoji_Modifier_Base` symbols.
-  const Emoji_Modifier_Base = require(`${unicodeDataPackage}/Binary_Property/Emoji_Modifier_Base/symbols.js`);
-  for (const symbol of Emoji_Modifier_Base) {
-    test(symbol);
+  if (latestNode) {
+    // Test `Emoji_Modifier_Base` symbols.
+    const Emoji_Modifier_Base = require(`${unicodeDataPackage}/Binary_Property/Emoji_Modifier_Base/symbols.js`);
+    for (const symbol of Emoji_Modifier_Base) {
+      test(symbol);
+    }
   }
 
   // Test an `Emoji_Modifier_Base` followed by an `Emoji_Modifier`.
@@ -86,9 +92,7 @@ describe('regex', () => {
   // Test an Emoji 13.1 sequence.
   test('\u{1F48F}\u{1F3FF}');
 
-  // Only test the full RGI_Emoji list from the latest Unicode version in recent Node.js since
-  // emoji-regex-xs uses the version of Unicode supported by the environment
-  if (+process.versions.node.split('.')[0] >= 23) {
+  if (latestNode) {
     // Test all RGI_Emoji sequences.
     for (const sequence of RGI_EMOJI_SEQUENCES) {
       test(sequence);
