@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@unicode/unicode-15.1.0": "^1.6.5",
-    "mocha": "^10.8.2"
+    "mocha": "^11.1.0"
   },
   "engines": {
     "node": ">=10.0.0"
