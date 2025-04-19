@@ -86,9 +86,13 @@ describe('regex', () => {
   // Test an Emoji 13.1 sequence.
   test('\u{1F48F}\u{1F3FF}');
 
-  // Test all RGI_Emoji sequences.
-  for (const sequence of RGI_EMOJI_SEQUENCES) {
-    test(sequence);
+  // Only test the full RGI_Emoji list from the latest Unicode version in recent Node.js since
+  // emoji-regex-xs uses the version of Unicode supported by the environment
+  if (+process.versions.node.split('.')[0] >= 23) {
+    // Test all RGI_Emoji sequences.
+    for (const sequence of RGI_EMOJI_SEQUENCES) {
+      test(sequence);
+    }
   }
 
   // it('contains no non-ASCII Unicode symbols', () => {

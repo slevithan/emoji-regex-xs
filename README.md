@@ -93,8 +93,8 @@ Matched sequence 👩🏿 — code points: 2
   </tr>
   <tr>
     <td><b>Matches additional non-RGI emoji</b></td>
-    <td>Yes. Allows overqualified and underqualified emoji using an explicitly-defined list (Unicode's <a href="https://unicode.org/Public/emoji/latest/emoji-test.txt">emoji-test.txt</a> strings, which includes non-RGI emoji) plus an additional list of exceptions.</td>
-    <td>Yes. Allows overqualified and underqualified emoji using a general pattern that matches all Unicode sequences that follow the structure of valid emoji. This allows it to match emoji supported on only some platforms (ex: <a href="https://emojipedia.org/women-wrestling-light-skin-tone#designs">women wrestling: light skin</a> and <a href="https://emojipedia.org/flag-for-texas-ustx#designs">Texas flag</a>) that aren't correctly matched by <code>emoji-regex</code>. Results are therefore more complete, but note that they can include emoji code point sequences that don't correspond to currently-used emoji.</td>
+    <td>Yes. Allows some overqualified and underqualified emoji using an explicitly-defined list (Unicode's <a href="https://unicode.org/Public/emoji/latest/emoji-test.txt">emoji-test.txt</a> strings, which includes non-RGI emoji) plus an additional list of exceptions.</td>
+    <td>Yes. Allows some overqualified and underqualified emoji using a general pattern that matches all Unicode sequences that follow the structure of valid emoji. This allows it to match emoji supported on only some platforms (ex: <a href="https://emojipedia.org/women-wrestling-light-skin-tone#designs">women wrestling: light skin</a> and <a href="https://emojipedia.org/flag-for-texas-ustx#designs">Texas flag</a>) that aren't correctly matched by <code>emoji-regex</code>. Results are therefore more complete, but note that they can include emoji code point sequences that don't correspond to currently-used emoji.</td>
   </tr>
 </table>
 
