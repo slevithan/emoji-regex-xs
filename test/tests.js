@@ -11,6 +11,7 @@ const regex = require('../index.js');
 
 const unicodeDataPackage = require('./unicode-data-package.js');
 const RGI_EMOJI_SEQUENCES = require('./get-sequences.js');
+const EMOJI_TEST_SEQUENCES = require(`${unicodeDataPackage}/Sequence_Property/Emoji_Test/index.js`);
 
 describe('regex', () => {
 
@@ -95,6 +96,13 @@ describe('regex', () => {
   if (isLatestNode) {
     // Test all RGI_Emoji sequences.
     for (const sequence of RGI_EMOJI_SEQUENCES) {
+      test(sequence);
+    }
+  }
+
+  if (isLatestNode) {
+    // Test all emoji-test.txt sequences <unicode.org/Public/emoji/latest/emoji-test.txt>
+    for (const sequence of EMOJI_TEST_SEQUENCES) {
       test(sequence);
     }
   }
