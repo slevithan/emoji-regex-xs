@@ -1,6 +1,6 @@
 {
   "name": "emoji-regex-xs",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A regular expression to match all emoji-only symbols",
   "main": "index.js",
   "module": "index.mjs",
