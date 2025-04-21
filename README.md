@@ -4,7 +4,7 @@
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![bundle][bundle-src]][bundle-href]
 
-This is a drop-in replacement for the [*emoji-regex*](https://github.com/mathiasbynens/emoji-regex) package that shares its API and passes all of its emoji tests, but reduces its uncompressed size by more than 98% (from ~13 KB to 0.2 KB). It manages this by relying on the Unicode version built into the JavaScript environment, rather than hard coding all emoji code points from a specific Unicode version.
+This is a drop-in replacement for the [*emoji-regex*](https://github.com/mathiasbynens/emoji-regex) package that shares its API and passes all of its emoji tests, but reduces its uncompressed size by more than 98% (from ~13 kB to ~0.2 kB). It manages this by relying on the Unicode version built into the JavaScript environment, rather than hard coding all emoji code points from a specific Unicode version.
 
 ## Install and use
 
@@ -53,13 +53,13 @@ Matched sequence 👩🏿 — code points: 2
 Matched sequence 👩🏿 — code points: 2
 ```
 
-## Detailed comparison with `emoji-regex`
+## Detailed comparison with *emoji-regex*
 
 <table>
   <tr>
     <th></th>
-    <th><code>emoji-regex</code></th>
-    <th><code>emoji-regex-xs</code></th>
+    <th><i>emoji-regex</i></th>
+    <th><i>emoji-regex-xs</i></th>
   </tr>
   <tr>
     <td><b>Compatibility</b></td>
@@ -68,13 +68,13 @@ Matched sequence 👩🏿 — code points: 2
   </tr>
   <tr>
     <td><b>Uncompressed size</b></td>
-    <td>~13 KB</td>
-    <td>~0.2 KB</td>
+    <td>~13 kB</td>
+    <td>~0.2 kB</td>
   </tr>
   <tr>
     <td><b>Gzipped size</b></td>
-    <td>~3 KB</td>
-    <td>~0.2 KB</td>
+    <td>~3 kB</td>
+    <td>~0.2 kB</td>
   </tr>
   <tr>
     <td><b>Unicode version</b></td>
@@ -108,7 +108,7 @@ ES2018 added support for matching Unicode properties in regular expressions with
 
 ES2024 added support for matching multicharacter Unicode *properties of strings* with `\p{…}`, so you might think one of the new properties `Basic_Emoji`, `Emoji_Keycap_Sequence`, `RGI_Emoji_Modifier_Sequence`, `RGI_Emoji_Flag_Sequence`, `RGI_Emoji_Tag_Sequence`, `RGI_Emoji_ZWJ_Sequence`, or `RGI_Emoji` will do the trick. Well, kind of. `RGI_Emoji` indeed seems like what we want, but unfortunately, some common-sense and broadly-supported emoji are not in the official "RGI" (Recommended for General Interchange) list. It also doesn't match underqualified and overqualified emoji that include or exclude certain invisible Unicode markers. For example, the iOS emoji keyboard overqualifies certain emoji. So we need something that matches everything in `RGI_Emoji`, and more. Additionally, `\p{RGI_Emoji}` relies on flag `v` which is only supported by 2023-era browsers ([table](https://caniuse.com/mdn-javascript_builtins_regexp_unicodesets)) and Node.js 20+.
 
-All of this is why the popular *emoji-regex* package exists. It does a great job of accurately matching most common-sense emoji. But to do so, it uses a massive (~13 KB uncompressed) regex that hard codes a list of Unicode code points that are tied to a specific Unicode version. Conversely, *emoji-regex-xs* uses a general pattern that continues to be highly accurate in matching emoji, but uses only ~0.2 KB to do so. It follows *emoji-regex*'s API and reuses its tests, so it can be swapped-in as a replacement.
+All of this is why the popular *emoji-regex* package exists. It does a great job of accurately matching most common-sense emoji. But to do so, it uses a massive (~13 kB uncompressed) regex that hard codes a list of Unicode code points that are tied to a specific Unicode version. Conversely, *emoji-regex-xs* uses a general pattern that continues to be highly accurate in matching emoji, but uses only ~0.2 kB to do so. It follows *emoji-regex*'s API and reuses its tests, so it can be swapped-in as a replacement.
 
 > **Note:** The Unicode standard includes an [official regex](https://www.unicode.org/reports/tr51/#EBNF_and_Regex) for matching emoji. However, although it can serve as a good foundation (after adapting to the JavaScript regex flavor), it doesn't match underqualified emoji including those in Unicode's emoji-test.txt list.
 
