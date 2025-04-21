@@ -107,6 +107,13 @@ describe('regex', () => {
     }
   }
 
+  it('does not match non-emoji sequences in property Emoji', () => {
+    ['#', '*', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].forEach(char => {
+      assert.doesNotMatch(char, regex());
+      assert.doesNotMatch(`char\uFE0F`, regex());
+    });
+  });
+
   // it('contains no non-ASCII Unicode symbols', () => {
   //   const regexSource = regex().source;
   //   assert(/\\u\{/.test(regexSource) === false);
