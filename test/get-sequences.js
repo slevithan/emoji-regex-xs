@@ -1,4 +1,4 @@
-// Tests copied from emoji-regex 10.3.0 by @mathiasbynens; MIT License
+// Tests copied from emoji-regex 10.4.0 by @mathiasbynens; MIT License
 // <https://github.com/mathiasbynens/emoji-regex>
 
 const unicodeDataPackage = require('./unicode-data-package.js');

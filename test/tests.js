@@ -2,7 +2,7 @@
 // uses the version of Unicode supported by the environment
 const isLatestNode = +process.versions.node.split('.')[0] >= 23;
 
-// Tests copied (with modifications) from emoji-regex 10.3.0 by @mathiasbynens; MIT License
+// Tests copied (with modifications) from emoji-regex 10.4.0 by @mathiasbynens; MIT License
 // <https://github.com/mathiasbynens/emoji-regex>
 
 const assert = require('assert');
