@@ -161,11 +161,32 @@ describe('regex', () => {
     }
   }
 
-  it('does not match non-emoji sequences in property Emoji', () => {
-    ['#', '*', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].forEach(char => {
+  // Test platform-specific emoji sequences
+  for (const sequence of [
+    // women wrestling: light skin tone (added to draft Emoji 17.0 in 2025)
+    '\u{1F93C}\u{1F3FB}\u{200D}\u{2640}\u{FE0F}',
+    // flag for Texas
+    '\u{1F3F4}\u{E0075}\u{E0073}\u{E0074}\u{E0078}\u{E007F}',
+    // ninja cat
+    '\u{1F431}\u{200D}\u{1F464}',
+  ]) {
+    test(sequence);
+  }
+
+  it('does not match non-emoji sequences', () => {
+    for (const char of [
+      'A', '\u200D', '\u20E3', '\uFE0F',
+      // Within \p{Emoji}
+      '#', '*', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+    ]) {
       assert.doesNotMatch(char, regex());
-      assert.doesNotMatch(`char\uFE0F`, regex());
-    });
+      assert.doesNotMatch(`${char}\uFE0F`, regex());
+    }
+  });
+
+  it('matches adjacent emoji sequences as separate matches', () => {
+    assert.strictEqual('\u{1F431}\u{1F464}'.match(regex()).length, 2);
+    assert.strictEqual('🇧🇷🇯🇵🏳️‍🌈🇺🇸'.match(regex()).length, 4);
   });
 
   // it('contains no non-ASCII Unicode symbols', () => {

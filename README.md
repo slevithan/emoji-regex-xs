@@ -121,7 +121,7 @@ ES2024 added support for matching multicharacter Unicode *properties of strings*
 
 All of this is why the popular *emoji-regex* package exists. It does a great job of accurately matching most common-sense emoji. But to do so, it uses a massive (~13 kB uncompressed) regex that hard codes a list of Unicode code points that are tied to a specific Unicode version. Conversely, *emoji-regex-xs* uses a general pattern that continues to be highly accurate in matching emoji, but uses only ~0.2 kB to do so. It follows *emoji-regex*'s API and reuses its tests, so it can be swapped-in as a replacement.
 
-> **Note:** The Unicode standard includes an [official regex](https://www.unicode.org/reports/tr51/#EBNF_and_Regex) for matching emoji. However, although it can serve as a good foundation (after adapting to the JavaScript regex flavor), it doesn't match underqualified emoji including those in the Unicode standard's emoji-test.txt list.
+> **Note:** The Unicode standard includes an [official regex](https://www.unicode.org/reports/tr51/#EBNF_and_Regex) for matching emoji. However, although it can serve as a good foundation (after adapting to the JavaScript regex flavor), it matches some non-emoji characters like digits 0-9 and it matches fragments of some underqualified emoji (including some of those in the Unicode standard's emoji-test.txt list).
 
 <!-- Badges -->
 
