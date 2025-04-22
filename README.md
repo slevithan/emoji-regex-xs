@@ -53,50 +53,61 @@ Matched sequence 👩🏿 — code points: 2
 Matched sequence 👩🏿 — code points: 2
 ```
 
-## Detailed comparison with *emoji-regex*
+## Comparison with *emoji-regex* and `\p{RGI_Emoji}`
 
 <table>
   <tr>
     <th></th>
     <th><i>emoji-regex</i></th>
     <th><i>emoji-regex-xs</i></th>
+    <th><code>\p{RGI_Emoji}</code></th>
   </tr>
   <tr>
     <td><b>Compatibility</b></td>
     <td>• Node.js 4 <br> • 2015-era browsers</td>
     <td>• Node.js 10 <br> • 2016-era browsers</td>
+    <td>• Node.js 20 <br> • 2023-era browsers</td>
   </tr>
   <tr>
     <td><b>Uncompressed size</b></td>
     <td>~13 kB</td>
     <td>~0.2 kB</td>
+    <td>N/A</td>
   </tr>
   <tr>
     <td><b>Gzipped size</b></td>
     <td>~3 kB</td>
     <td>~0.2 kB</td>
+    <td>N/A</td>
   </tr>
   <tr>
     <td><b>Unicode version</b></td>
     <td>Uses the latest Unicode version at the time of release, so results are deterministic.</td>
-    <td>Uses the Unicode version that your browser or environment supports natively, so results match the handling of other functionality.</td>
+    <td colspan="2">Uses the Unicode version that your environment supports natively, so results match the handling of other functionality.</td>
   </tr>
   <tr>
-    <td><b>Matches everything matched by ES2024's <code>/\p{RGI_Emoji}/v</code></b></td>
+    <td><b>Matches everything matched by ES2024's <code>\p{RGI_Emoji}</code></b></td>
+    <td>Yes.</td>
     <td>Yes.</td>
     <td>Yes.</td>
   </tr>
   <tr>
-    <td><b>Matches all non-RGI, underqualified emoji specified in Unidode's <a href="https://unicode.org/Public/emoji/latest/emoji-test.txt">emoji-test.txt</a></b></td>
+    <td><b>Matches all non-RGI, underqualified emoji included in Unicode's <a href="https://unicode.org/Public/emoji/latest/emoji-test.txt">emoji-test.txt</a></b></td>
     <td>Yes.</td>
     <td>Yes.</td>
+    <td>No/none.</td>
   </tr>
   <tr>
     <td><b>Matches additional non-RGI emoji</b></td>
     <td>Yes. Allows some overqualified emoji using an explicitly-defined <a href="https://github.com/mathiasbynens/emoji-test-regex-pattern/blob/main/script/get-sequences.js">list</a>.</td>
-    <td>Yes. Uses a general pattern that matches all Unicode sequences that follow the structure of emoji. This allows it to match emoji supported on only some platforms (ex: <a href="https://emojipedia.org/women-wrestling-light-skin-tone#designs">women wrestling: light skin</a> and <a href="https://emojipedia.org/flag-for-texas-ustx#designs">Texas flag</a>) that aren't correctly matched by <i>emoji-regex</i>.</td>
+    <td>Yes. Uses a general pattern that matches all Unicode sequences that follow the structure of emoji.<sup>[1]</sup></td>
+    <td>No.</td>
   </tr>
 </table>
+
+### Footnotes
+
+1. This allows *emoji-regex-xs* to match emoji supported on only some platforms (ex: [women wrestling: light skin](https://emojipedia.org/women-wrestling-light-skin-tone#designs) and [Texas flag](https://emojipedia.org/flag-for-texas-ustx#designs)) that aren't correctly matched by <i>emoji-regex</i>.
 
 ## More details about emoji, Unicode properties, and regexes
 
@@ -104,13 +115,13 @@ Emoji are complicated. Or more specifically, how they're defined in the Unicode 
 
 Given the complexity, many libraries that roll their own emoji regex get it very wrong, e.g. by matching emoji fragments that split off some of their attributes, or by matching things like digits (0, 1, 2, …), #, \*, or certain invisible characters. These characters are obviously not emoji, but they're matched by naive patterns because they might *become* emoji when followed by various combining characters. Or they might be special characters used in emoji sequences while not being emoji on their own.
 
-ES2018 added support for matching Unicode properties in regular expressions with `\p{…}`, so you might think this problem is now trivial, given that the list of supported properties includes `Emoji`, `Emoji_Presentation`, `Emoji_Modifier`, `Emoji_Modifier_Base`, `Emoji_Component`, and `Extended_Pictographic`. But no. On their own, none of these are what you want. Their matches variously include certain emoji fragments and non-emoji characters.
+ES2018 added support for matching Unicode properties in regular expressions with `\p{…}`, so you might think this problem is now trivial, given that the list of supported properties includes `Emoji`, `Emoji_Presentation` (`EPres`), `Emoji_Modifier` (`EMod`), `Emoji_Modifier_Base` (`EBase`), `Emoji_Component` (`EComp`), and `Extended_Pictographic` (`ExtPict`). But no. On their own, none of these are what you want. They match only one code point at a time, and their matches variously include emoji fragments and non-emoji characters.
 
-ES2024 added support for matching multicharacter Unicode *properties of strings* with `\p{…}`, so you might think one of the new properties `Basic_Emoji`, `Emoji_Keycap_Sequence`, `RGI_Emoji_Modifier_Sequence`, `RGI_Emoji_Flag_Sequence`, `RGI_Emoji_Tag_Sequence`, `RGI_Emoji_ZWJ_Sequence`, or `RGI_Emoji` will do the trick. Well, kind of. `RGI_Emoji` indeed seems like what we want, but unfortunately, some common-sense and broadly-supported emoji are not in the official "RGI" (Recommended for General Interchange) list. It also doesn't match underqualified and overqualified emoji that include or exclude certain invisible Unicode markers. For example, the iOS emoji keyboard overqualifies certain emoji. So we need something that matches everything in `RGI_Emoji`, and more. Additionally, `\p{RGI_Emoji}` relies on flag `v` which is only supported by 2023-era browsers ([table](https://caniuse.com/mdn-javascript_builtins_regexp_unicodesets)) and Node.js 20+.
+ES2024 added support for matching multicharacter Unicode *properties of strings* with `\p{…}`, so you might think one of the new properties `Basic_Emoji`, `Emoji_Keycap_Sequence`, `RGI_Emoji_Modifier_Sequence`, `RGI_Emoji_Flag_Sequence`, `RGI_Emoji_Tag_Sequence`, `RGI_Emoji_ZWJ_Sequence`, or `RGI_Emoji` will do the trick. Well, kind of. `RGI_Emoji` indeed seems like what we want, but unfortunately, some broadly-supported emoji are not in the official "RGI" (Recommended for General Interchange) list. It also doesn't match underqualified and overqualified emoji that include or exclude certain invisible Unicode markers. For example, the iOS emoji keyboard overqualifies certain emoji. So we need something that matches everything in `RGI_Emoji`, and more. Additionally, `\p{RGI_Emoji}` relies on flag `v`, which is only supported by 2023-era browsers ([support](https://caniuse.com/mdn-javascript_builtins_regexp_unicodesets)) and Node.js 20+.
 
 All of this is why the popular *emoji-regex* package exists. It does a great job of accurately matching most common-sense emoji. But to do so, it uses a massive (~13 kB uncompressed) regex that hard codes a list of Unicode code points that are tied to a specific Unicode version. Conversely, *emoji-regex-xs* uses a general pattern that continues to be highly accurate in matching emoji, but uses only ~0.2 kB to do so. It follows *emoji-regex*'s API and reuses its tests, so it can be swapped-in as a replacement.
 
-> **Note:** The Unicode standard includes an [official regex](https://www.unicode.org/reports/tr51/#EBNF_and_Regex) for matching emoji. However, although it can serve as a good foundation (after adapting to the JavaScript regex flavor), it doesn't match underqualified emoji including those in Unicode's emoji-test.txt list.
+> **Note:** The Unicode standard includes an [official regex](https://www.unicode.org/reports/tr51/#EBNF_and_Regex) for matching emoji. However, although it can serve as a good foundation (after adapting to the JavaScript regex flavor), it doesn't match underqualified emoji including those in the Unicode standard's emoji-test.txt list.
 
 <!-- Badges -->
 
