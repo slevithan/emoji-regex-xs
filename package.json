@@ -23,7 +23,8 @@
     "index.mjs"
   ],
   "scripts": {
-    "test": "mocha"
+    "prepack": "node build.mjs",
+    "test": "node build.mjs && mocha"
   },
   "devDependencies": {
     "@unicode/unicode-16.0.0": "^1.6.5",
