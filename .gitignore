@@ -8,3 +8,5 @@ Thumbs.db
 
 # Temp files
 temp
+/index.mjs
+/index.js
